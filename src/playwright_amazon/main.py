@@ -2,6 +2,7 @@ import argparse
 import asyncio
 
 from playwright_amazon.dp import extract_dp
+from playwright_amazon.search import extract_search
 
 
 def main():
@@ -18,6 +19,9 @@ def main():
     parser.add_argument(
         "--asin", type=str, help="Amazon ASIN (required if --page is 'dp')"
     )
+    parser.add_argument(
+        "--query", help="Search query string (required if --page is 'search')"
+    )
 
     args = parser.parse_args()
 
@@ -30,7 +34,12 @@ def main():
             print(f"{k}: {v}")
 
     elif args.page == "search":
-        print("🔍 Search page handling not implemented yet.")
+        if not args.query:
+            parser.error("--query is required when --page is 'search'")
+        results = asyncio.run(extract_search(args.query))
+        print(f"🔍 Found {len(results)} results:")
+        for item in results:
+            print(f"- {item['title']} ({item['asin']}): {item['url']}")
 
 
 if __name__ == "__main__":
