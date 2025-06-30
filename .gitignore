@@ -1,0 +1,68 @@
+# ────────────────
+# 🐍 Python & uv
+# ────────────────
+
+# uv virtual environment
+.venv/
+
+# uv lockfile (optional — if you want to regenerate in each environment)
+# Uncomment to ignore:
+# uv.lock
+
+# Bytecode / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# C extensions
+*.so
+
+# Editable install egg-info
+*.egg-info/
+*.egg
+
+# Build artifacts
+build/
+dist/
+*.tar.gz
+*.whl
+
+# Coverage reports
+.coverage
+htmlcov/
+coverage.xml
+
+# Pytest
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Temporary files
+*.swp
+*.bak
+*.tmp
+*~
+
+# dotenv files (optional, if used for secrets)
+.env
+.env.*
+
+# pyenv version pinning
+.python-version
