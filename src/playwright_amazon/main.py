@@ -1,8 +1,9 @@
 import argparse
 import asyncio
-
 from playwright_amazon.dp import extract_dp
 from playwright_amazon.search import extract_search
+from playwright_amazon.utils import get_amazon_page_url
+from playwright_amazon.screenshot import take_dual_screenshots
 
 
 def main():
@@ -22,6 +23,11 @@ def main():
     parser.add_argument(
         "--query", help="Search query string (required if --page is 'search')"
     )
+    parser.add_argument(
+        "--screenshot",
+        type=str,
+        help="Save a screenshot of the resulting page to the given local file path",
+    )
 
     args = parser.parse_args()
 
@@ -33,6 +39,15 @@ def main():
         for k, v in result.items():
             print(f"{k}: {v}")
 
+        if args.screenshot:
+            value = args.asin if args.page == "dp" else args.query
+            url = get_amazon_page_url(args.page, value)
+            full_path, screen_path = asyncio.run(
+                take_dual_screenshots(url, args.screenshot)
+            )
+            print(f"📸 Full page screenshot saved to: {full_path}")
+            print(f"🖼️  Viewport screenshot saved to: {screen_path}")
+
     elif args.page == "search":
         if not args.query:
             parser.error("--query is required when --page is 'search'")
@@ -40,6 +55,15 @@ def main():
         print(f"🔍 Found {len(results)} results:")
         for item in results:
             print(f"- {item['title']} ({item['asin']}): {item['url']}")
+
+        if args.screenshot:
+            value = args.asin if args.page == "dp" else args.query
+            url = get_amazon_page_url(args.page, value)
+            full_path, screen_path = asyncio.run(
+                take_dual_screenshots(url, args.screenshot)
+            )
+            print(f"📸 Full page screenshot saved to: {full_path}")
+            print(f"🖼️  Viewport screenshot saved to: {screen_path}")
 
 
 if __name__ == "__main__":
