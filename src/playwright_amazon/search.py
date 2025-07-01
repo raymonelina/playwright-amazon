@@ -2,7 +2,7 @@ from playwright.async_api import async_playwright
 from playwright_amazon.utils import get_amazon_search_page_url
 
 
-async def extract_search(query: str, limit: int = 10) -> list[dict]:
+async def extract_search(query: str, limit: int = 100) -> list[dict]:
     """Extracts search result summaries for a given Amazon search query (fast version)"""
     url = get_amazon_search_page_url(query)
 
@@ -25,11 +25,9 @@ async def extract_search(query: str, limit: int = 10) -> list[dict]:
         results = []
 
         base = page.locator(
-            "div.s-main-slot div[data-asin][role='listitem'][data-index]"
+            "div.s-main-slot div[data-asin][data-index][role='listitem']"
         )
         count = await base.count()
-
-        print(f"Found {count} items for query '{query}'")
 
         for i in range(min(count, limit)):
             item = base.nth(i)
@@ -38,14 +36,17 @@ async def extract_search(query: str, limit: int = 10) -> list[dict]:
                     """
                     (el) => {
                         const asin = el.getAttribute('data-asin');
+                        const index = el.getAttribute('data-index');
+                        const span = el.querySelector('a h2 span');
+                        const title = span ? span.textContent.trim() : null;
 
                         return {
-                            asin: asin.trim(),
-                            title: '',
-                            url: ''
+                            asin: asin?.trim() || null,
+                            index: index ? parseInt(index) : null,
+                            title: title
                         };
                     }
-                """
+                    """
                 )
                 if data:
                     results.append(data)

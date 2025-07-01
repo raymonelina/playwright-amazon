@@ -1,5 +1,7 @@
 import argparse
 import asyncio
+import json
+
 from playwright_amazon.dp import extract_dp
 from playwright_amazon.search import extract_search
 from playwright_amazon.utils import get_amazon_page_url
@@ -36,8 +38,8 @@ def main():
             parser.error("--asin is required when --page is 'dp'")
         result = asyncio.run(extract_dp(args.asin))
         print("📦 Product Details:")
-        for k, v in result.items():
-            print(f"{k}: {v}")
+        print("📦 Product Details:")
+        print(json.dumps(result, indent=2, ensure_ascii=False))
 
         if args.screenshot:
             value = args.asin if args.page == "dp" else args.query
@@ -53,8 +55,7 @@ def main():
             parser.error("--query is required when --page is 'search'")
         results = asyncio.run(extract_search(args.query))
         print(f"🔍 Found {len(results)} results:")
-        for item in results:
-            print(f"- {item['title']} ({item['asin']}): {item['url']}")
+        print(json.dumps(results, indent=2, ensure_ascii=False))
 
         if args.screenshot:
             value = args.asin if args.page == "dp" else args.query
