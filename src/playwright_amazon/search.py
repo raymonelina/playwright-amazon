@@ -40,10 +40,16 @@ async def extract_search(query: str, limit: int = 100) -> list[dict]:
                         const span = el.querySelector('a h2 span');
                         const title = span ? span.textContent.trim() : null;
 
+                        // Sponsored check
+                        const sponsorEl = el.querySelector("span.a-declarative span, span.a-declarative");
+                        const sponsored = sponsorEl && sponsorEl.textContent.trim().startsWith("Sponsored");
+
+
                         return {
                             asin: asin?.trim() || null,
                             index: index ? parseInt(index) : null,
-                            title: title
+                            title: title,
+                            sponsored: sponsored || false
                         };
                     }
                     """
