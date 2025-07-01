@@ -1,9 +1,5 @@
 from playwright.async_api import async_playwright
-
-
-def get_amazon_detail_page_url(asin: str) -> str:
-    """Construct the Amazon product detail page URL for a given ASIN"""
-    return f"https://www.amazon.com/dp/{asin}"
+from playwright_amazon.utils import get_amazon_detail_page_url
 
 
 async def extract_dp(asin: str) -> dict:

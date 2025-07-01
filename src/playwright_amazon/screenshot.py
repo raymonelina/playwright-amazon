@@ -26,12 +26,19 @@ async def take_screenshot(url: str, output_path: str, full_page: bool = True):
         await browser.close()
 
 
-async def take_dual_screenshots(url: str, base_path: str):
+async def take_dual_screenshots(url: str, base_path: str, page_type: str):
     """Take both full-page and viewport-only screenshots.
-    Saves to base_path and base_path with '-sc' suffix before extension."""
+    Filenames include page_type like '-search-' or '-dp-'."""
     base = Path(base_path)
-    full_path = base
-    screen_path = base.with_name(base.stem + "-sc" + base.suffix)
+    suffix = base.suffix
+    stem = base.stem
+
+    # Decorate filename with page_type
+    full_name = stem + f"-{page_type}" + suffix
+    screen_name = stem + f"-{page_type}-sc" + suffix
+
+    full_path = base.with_name(full_name)
+    screen_path = base.with_name(screen_name)
 
     await take_screenshot(url, str(full_path), full_page=True)
     await take_screenshot(url, str(screen_path), full_page=False)

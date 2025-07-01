@@ -1,9 +1,5 @@
 from playwright.async_api import async_playwright
-
-
-def get_amazon_search_page_url(query: str) -> str:
-    """Construct the Amazon search result page URL for a given query"""
-    return f"https://www.amazon.com/s?k={query.replace(' ', '+')}"
+from playwright_amazon.utils import get_amazon_search_page_url
 
 
 async def extract_search(query: str, limit: int = 10) -> list[dict]:

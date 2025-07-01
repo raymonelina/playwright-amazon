@@ -43,7 +43,7 @@ def main():
             value = args.asin if args.page == "dp" else args.query
             url = get_amazon_page_url(args.page, value)
             full_path, screen_path = asyncio.run(
-                take_dual_screenshots(url, args.screenshot)
+                take_dual_screenshots(url, args.screenshot, args.page)
             )
             print(f"📸 Full page screenshot saved to: {full_path}")
             print(f"🖼️  Viewport screenshot saved to: {screen_path}")
@@ -60,7 +60,7 @@ def main():
             value = args.asin if args.page == "dp" else args.query
             url = get_amazon_page_url(args.page, value)
             full_path, screen_path = asyncio.run(
-                take_dual_screenshots(url, args.screenshot)
+                take_dual_screenshots(url, args.screenshot, args.page)
             )
             print(f"📸 Full page screenshot saved to: {full_path}")
             print(f"🖼️  Viewport screenshot saved to: {screen_path}")
