@@ -66,3 +66,6 @@ coverage.xml
 
 # pyenv version pinning
 .python-version
+
+# image files
+*.png
